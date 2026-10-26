@@ -1,0 +1,21 @@
+{
+  "name": "geo-price-monorepo",
+  "private": true,
+  "license": "ISC",
+  "description": "Location-based regional pricing SDK (monorepo)",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "generate:geo": "node scripts/generate-country-polygons.js",
+    "check:geo": "tsx scripts/check-resolver.ts",
+    "check:pricing": "tsx scripts/check-pricing.ts",
+    "check:api": "tsx scripts/check-api.ts",
+    "check": "npm run check:geo && npm run check:pricing && npm run check:api"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "tsx": "^4.23.15"
+  }
+}
