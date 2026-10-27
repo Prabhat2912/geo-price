@@ -62,17 +62,23 @@ npm install @geo-price/server
 
 ## How it works
 
-```text
-Browser                    Your backend                   Payment provider
-   |                             |                              |
-   |-- location permission       |                              |
-   |-- coordinates --------------> resolve country              |
-   |<----------------------------- country code                  |
-   |-- create session -----------> set HttpOnly cookie            |
-   |-- request display prices ---> use server pricing config      |
-   |<----------------------------- public price list              |
-   |-- checkout request ---------> calculate server-side -------->|
-   |                             |<---------- payment result -----|
+```mermaid
+sequenceDiagram
+    participant Browser
+    participant Backend as Your backend
+    participant Payment as Payment provider
+
+    Browser->>Browser: Request location permission
+    Browser->>Backend: POST /geo/resolve (coordinates)
+    Backend-->>Browser: Country code
+    Browser->>Backend: POST /session
+    Backend-->>Browser: HttpOnly session cookie
+    Browser->>Backend: GET /prices/public
+    Backend-->>Browser: Localized price list
+    Browser->>Backend: Checkout request
+    Backend->>Payment: Create order from server pricing
+    Payment-->>Backend: Payment result
+    Backend-->>Browser: Checkout status
 ```
 
 The browser package detects a location and requests display prices. The
